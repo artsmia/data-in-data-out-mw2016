@@ -1,14 +1,24 @@
 # Anything In, Anything Out
 
-**Dynamic Data Aggregation to Web Publishing**
+**Dynamic Data Aggregation + Web Publishing**
 
 ---
 
 We take data, convert it to JSON, store it in Redis, index it in ElasticSearch and then publish it for the masses. Here's how...
 
-## Setup:
+TODO: a drawing?
 
-Clone this repository! Your machine should have the following packages installed:
+## Setup
+
+We've prepared an AWS machine for everyone to use with the required data
+and tools at the ready.
+
+You'll need to open a terminal and use `ssh` to connect to it:
+
+`ssh ubuntu@<ip address>`
+
+If you want, you can `git clone` this repository and follow along on your
+local machine.
 
 ## Lesson 1: Where does data come from?
 
@@ -61,6 +71,10 @@ So now our data for Van Gogh looks like:
 
 Try adding an artist to your local redis database.
 
+---
+
+TODO cover sets and relating things by key within redis?
+
 ### Understanding Key Value stores, and how to make them work for you.
 
 Deciding on a structure for your data in Redis is the hardest part.
@@ -82,13 +96,23 @@ part of redis comes into play.
 
 To get around the slowdown from saving thousands of `key: value` pairs,
 we group artworks by their object id and store them in a series of
-hashes. We call these "**buckets**". Artworks are sorted into buckets
+hashes.
+
+We call these "**buckets**". Artworks are sorted into buckets
 according to their object ID. The first 1000 go into "bucket 0", the
 next 1000 go into "bucket 1".
 
+---
+
 To make it easy to know which bucket an object goes in, we use the
-object id divided by 1000 to assign buckets. So 278 is in bucket `0`,
-1218 - `1`, 60728 - `60`, etc.
+object id divided by 1000 to assign buckets.
+
+| Object ID | Bucket |
+| ---  | --- |
+| `id` | `id / 1000` |
+| 278 | 0 |
+| 1218 | 1 |
+| 60728 | 60 |
 
 Each bucket is stored in a redis hash. Here's how to get the info on object
 60728:
@@ -98,22 +122,27 @@ Each bucket is stored in a redis hash. Here's how to get the info on object
 "{\"id\":\"60728\",\"title\":\"Celestial Horse\",\"medium\":\"Bronze with traces of polychrome\", <... lots of JSON>}"
 ```
 
-Questions?
+---
 
-Redis doesn't do search. It's great for storing data and accessing it
-quickly, but the only way to do that is to tell redis exactly what you're
-looking for.
+### Questions?
+
+## Lesson 3: Indexing and searching data
+
+(Or, **Where did I put my keys?!**)
+
+---
+
+### Redis doesn't do search.
+
+It's great for storing data and accessing it quickly, but redis needs
+know exactly what you're looking for.
 
 [Elasticsearch](https://www.elastic.co/products/elasticsearch) is a tool
 for *information retrieval*. It's great at finding things.
 
-## Lesson 3: Indexing and searching data
+---
 
-(Or, Where did I put my keys?!)
 
-### Here's Why.
-
-### Here's How.
 
 ## Lesson 4: Search for it, I dare you.
 
@@ -124,3 +153,7 @@ Things to note: Load times,  UI flexibility.
 ## In Conclusion
 
 ## Resources
+
+# Ideas / TODO
+
+install and run kibana
