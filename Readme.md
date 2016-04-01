@@ -1,65 +1,126 @@
-# Anything In, Anything Out: Dynamic Data Aggregation to Web Publishing
+# Anything In, Anything Out
+
+**Dynamic Data Aggregation to Web Publishing**
+
+---
 
 We take data, convert it to JSON, store it in Redis, index it in ElasticSearch and then publish it for the masses. Here's how...
 
-## Getting Setup:
+## Setup:
+
 Clone this repository! Your machine should have the following packages installed:
 
-
 ## Lesson 1: Where does data come from?
-### Introduction to data at Mia.
-We, like many cultural institutions, have data in various places, in all formats. For this workshop we will be focusing on collections data. We store our collections meta data in TMS with visual resources stored in Media. We have over 90,000 objects in our collection. Lots of data!
-We have included a sample of our data in this repository to be experimented with through out the demonstration.
 
-### Converting Data into JSON.
-We encourage you to convert your data into JSON format. This is not required for the following steps to work at your organization. Our system/structure for storing and returning data dynamically will work with all data formats.
-We prefer JSON for a couple of reasons:
-  1. More flexible. We think JSON is by far the most flexible when publishing to the web.
-  2. It works with all kinds of front end content management and web publishing systems.
-  3. It's easy to understand, even for normal people.
-  4. We like it.
-Here are a couple ways to convert your data or any data into json format:
+### Introduction to data at Mia.
+
+Data lives in different places and formats. For this workshop we will focus on collections data.
+
+### Converting data into JSON.
+
+JSON is a swiss army knife data representation. It's replaced
+XML as the common-denominator format of data returned from APIs.
 
 ### API it.
 
 
 ## Lesson 2: Fun with Redis!
+
 ### What is Redis?
-Redis is like a new and improved version of Memcache. Redis is a key value store database that is crazy fast and extremely flexible.
-[Redis.io](http://Redis.io)
-Let's run a few basic commands in the terminal!
+
+[Redis](http://redis.io) is a key value store that is fast and flexible. It does simple `key: value` mappings, but beyond that it is also a "data structure store", optimized to handle different types of data quickly and effectively.
+
+---
+
+The basics:
+
+* strings store a single value with the key used to retrieve it: `set name kjell` or `set day friday!`
+
+* hashes can store multiple values behind a single key:
+
+```
+hset artist:van-gogh firstName Vincent
+hset artist:van-gogh lastName "Van Gogh"
+```
+
+`hmset` can set multiple hash values in one command: `hmset artist:van-gogh birth "30 March 1853" death "29 July 1890"`
+
+So now our data for Van Gogh looks like:
+
+```
+> hgetall artist:van-gogh
+1) "firstName"
+2) "Vincent"
+3) "lastName"
+4) "Van Gogh"
+5) "birth"
+6) "30 March 1853"
+7) "death"
+8) "29 July 1890"
+```
+
+Try adding an artist to your local redis database.
 
 ### Understanding Key Value stores, and how to make them work for you.
-Deciding on a structure for your data in Redis is often times the hardest part.
-This is how we do it for our collections data:
-We use buckets. Each object in our collection has a unique id, a minimum of 3 digits. We group them based on all digits preceding the last two: object 1230 would be part of group 12. object 43290 would be part of group 432. By sectioning them into buckets we are able to search through a smaller set based on their group number. instead of searching through all 90,000+ ids for a single object.
-These groups and the structure in Redis has no association to the object it is merely a way to break the data into manageable sets.
-Here is a sample of our data structure:
 
-Things to think about when deciding on a structure for your data inside of Redis:
-Associations. How can you structure the data to take advantage of Redis's ability to create unions, sets, and other native functions?
-Future possibilities. Can you see anything n the near or distant future that may prove useful to how you structure data now?
+Deciding on a structure for your data in Redis is the hardest part.
 
-### Structure? Check! Let's put it in Redis.
-You have your JSON data. Let's save it to Redis.
-Run the following commands:
+For representing museum object data, the simplest solution would be to
+store information about each object using the object `id` as a key. So
+to look up information on `17`, I would say to redis:
 
-Publishing data directly from Redis using PHP.
+```
+> get object:17
+"{\"id\":\"17\",\"title\":\"Sketch made on Indian Reservation, Montana\",\"medium\":\"Graphite\",…}"
+```
 
+---
 
-## Lesson 3: Where did I put my keys?!
-ElasticSearch can save users
-  We index our data in ElasticSearch.
+But as the size of the `object:` keys grows, it takes longer and longer
+for redis to keep things organized. This is where the *data structure*
+part of redis comes into play.
+
+To get around the slowdown from saving thousands of `key: value` pairs,
+we group artworks by their object id and store them in a series of
+hashes. We call these "**buckets**". Artworks are sorted into buckets
+according to their object ID. The first 1000 go into "bucket 0", the
+next 1000 go into "bucket 1".
+
+To make it easy to know which bucket an object goes in, we use the
+object id divided by 1000 to assign buckets. So 278 is in bucket `0`,
+1218 - `1`, 60728 - `60`, etc.
+
+Each bucket is stored in a redis hash. Here's how to get the info on object
+60728:
+
+```
+> hget object:60 60728
+"{\"id\":\"60728\",\"title\":\"Celestial Horse\",\"medium\":\"Bronze with traces of polychrome\", <... lots of JSON>}"
+```
+
+Questions?
+
+Redis doesn't do search. It's great for storing data and accessing it
+quickly, but the only way to do that is to tell redis exactly what you're
+looking for.
+
+[Elasticsearch](https://www.elastic.co/products/elasticsearch) is a tool
+for *information retrieval*. It's great at finding things.
+
+## Lesson 3: Indexing and searching data
+
+(Or, Where did I put my keys?!)
 
 ### Here's Why.
 
 ### Here's How.
 
 ## Lesson 4: Search for it, I dare you.
+
 Included in this repository is a simple php site that allows you to enter a search term and then renders the full JSON found in Redis via ElasticSearch and a styled version of the same data.
-Things to note:
-Load times.
-UI flexibility.
+
+Things to note: Load times,  UI flexibility.
+
 ## In Conclusion
 
 ## Resources
