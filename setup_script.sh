@@ -33,3 +33,8 @@ which redis-cli > /dev/null || {
   sudo update-rc.d elasticsearch defaults
   curl -X GET http://127.0.0.1:9200/
 }
+
+which jq > /dev/null || sudo apt-get -y install jq parallel
+
+[[ -d collection ]] || git clone https://github.com/artsmia/collection
+[[ -d collection-elasticsearch ]] || git clone --depth 1 https://github.com/artsmia/collection-elasticsearch
