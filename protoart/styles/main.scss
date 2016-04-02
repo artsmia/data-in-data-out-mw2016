@@ -1,0 +1,267 @@
+/*
+ * Web Starter Kit
+ *
+ * Multi-screen layout styles for your page. Brought to you by the
+ * Web Starter Kit team.
+ *
+ */
+@import '_h5bp';
+
+/*
+ * Visual Style Guide styles
+ * Remove if you prefer to use a CSS library, like Bootstrap
+ */
+@import 'components/components';
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  position: relative;
+  font-family: 'Roboto Condensed', Helvetica, Arial, sans-serif;
+  font-weight: 300;
+  background-color: #fff;
+  box-sizing: border-box;
+  min-height: 100%;
+}
+
+body.open {
+  overflow: hidden;
+}
+a, a:visited, a:hover{
+  text-decoration:none;
+}
+
+.app-bar {
+  display: block;
+  width: 60px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: transparent;
+  overflow: hidden;
+  z-index: 100;
+}
+
+.app-bar-container {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  height: 60px;
+  width: 60px;
+  position: relative;
+  -webkit-flex-direction: row;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  margin: 0;
+}
+
+.app-bar.open,
+.app-bar.open ~ main {
+  -webkit-transform: translate(250px, 0);
+          transform: translate(250px, 0);
+}
+
+.app-bar .logo {
+  -webkit-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  font-size: 2em;
+  line-height: 60px;
+  margin: 0 16px;
+  padding: 0;
+  color: #fefefe;
+  float: none;
+  max-width: none;
+  font-weight: 300;
+  display: initial;
+}
+
+.app-bar .logo a {
+  text-decoration: none;
+  color: inherit;
+  font-weight: normal;
+}
+
+.app-bar-actions {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  z-index: 2;
+}
+
+.app-bar button {
+  width: 60px;
+  height: 60px;
+  background-image: none;
+  background-color: rgba(255,255,255,.4);
+  border: none;
+  padding: 0;
+  display: inline-block;
+  -webkit-transition: background-color 0.2s ease-out;
+          transition: background-color 0.2s ease-out;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.app-bar button img {
+  height: 24px;
+  width: 24px;
+}
+
+.app-bar button:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.app-bar button:focus {
+  background-color: rgba(255, 255, 255, 0.2);
+  outline: 0;
+}
+
+.app-bar button:active {
+  background-color: rgba(255, 255, 255, 0.4);
+}
+
+.promote-layer {
+  /*
+  This may promote the layer to a composited
+  layer.
+
+  Replace with will-change when available
+
+  #perfmatters
+  */
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+.base,
+p,
+ul,
+ol {
+  font-size: 19px;
+}
+
+main {
+  margin: 0 auto;
+  /* Height of the header */
+  min-height: 100%;
+}
+.search_input{
+  left:0;
+  right:0;
+  top:2em;
+  bottom:0;
+  position:absolute;
+  z-index:1;
+  padding:0 20px;
+  max-height:11.5em;
+  background: rgba(0,0,0,.3);
+}
+.search_input input {
+  width:100%;
+  line-height:40px;
+  font-size:1.5em;
+}
+.header {
+  width:100%;
+  height:10em;
+  background:url(http://1.api.artsmia.org/full/37185.jpg) no-repeat center center;
+  background-size:cover;
+  text-align:center;
+  -webkit-transition: height 0.8s;
+  -moz-transition: height 0.8s;
+  transition: height 0.8s;
+  position: relative;
+}
+.landing {
+  height:35em;
+  width:100%;
+  background:url(http://1.api.artsmia.org/full/37185.jpg) no-repeat center center;
+  background-size:cover;
+  text-align:center;
+}
+.search_input h1{
+  color:#ffffff;
+}
+.content_block {
+  padding: 40px 20px;
+}
+.json_wrapper{
+  display: inline-block;
+  overflow:auto;
+}
+.code {
+  margin: 10px 0;
+}
+.code p{
+  font-family: Monospace;
+  font-size:.8em;
+  white-space:normal;
+}
+.result{
+  margin: 10px 0;
+}
+.result-image {
+  display: inline-block;
+  width: 33%;
+  margin-right:1%;
+  float:left;
+}
+.result-image img{
+  width:100%;
+}
+.result-tombstone {
+  display: inline-block;
+  width:64%;
+  margin-left:1%;
+}
+.result-tombstone h4{
+  padding-top:0;
+  font-weight: 700;
+}
+.result-tombstone p{
+  font-size: 1em;
+  padding-top: 5px;
+  margin-top: 0;
+}
+a:visited.button{
+  color:#ffffff;
+}
+a.scrollToTop .icon{
+  line-height:45px;
+}
+a.scrollToTop, a:visited.scrollToTop, a:hover.scrollToTop {
+  text-decoration:none;
+  width:40px;
+  height:40px;
+  position:fixed;
+  bottom:10px;
+  right:10px;
+  color:#ffffff;
+  background:#999999;
+  border-radius:20px;
+  text-align:center;
+  vertical-align:middle;
+  opacity:.7;
+  z-index:100;
+}
+
+@media screen and (max-width:600px) {
+.dynamic_content, .evergreen_content {
+  padding:0;
+}
+.dynamic_content h1, .evergreen_content h2{
+  text-align:center;
+}
+.prev, .next{
+  display:none !important;
+}
+}
