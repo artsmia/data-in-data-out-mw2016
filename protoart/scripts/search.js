@@ -5,11 +5,12 @@ $(function(){
    $("#search").change(function(){
      $( ".wrapper" ).empty();
      var term = $( "#search" ).val();
-     $.getJSON("http://search.artsmia.org/" + term, function(data) {
+     var ES_url = '/search.php?q='
+     $.getJSON(ES_url + term, function(data) {
 
          $.each(data.hits, function (i, ob) {
              $.each(ob, function (ind, obj) {
-                 var image_url = "http://1.api.artsmia.org/full/"+obj._id+".jpg";
+                 var image_url = "http://"+obj._id%7+".api.artsmia.org/"+obj._id+".jpg";
                  var json_display = JSON.stringify(obj);
                    $(".wrapper").append("\
                     <div class='json_wrapper g--medium-1 g-wide--2'>\
