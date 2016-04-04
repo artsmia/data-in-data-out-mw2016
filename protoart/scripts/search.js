@@ -11,12 +11,12 @@ $(function(){
          $.each(data.hits, function (i, ob) {
              $.each(ob, function (ind, obj) {
                  var image_url = "http://"+obj._id%7+".api.artsmia.org/"+obj._id+".jpg";
-                 var json_display = JSON.stringify(obj);
+                 var json_display = JSON.stringify(obj, null, 2);
                    $(".wrapper").append("\
                     <div class='json_wrapper g--medium-1 g-wide--2'>\
-                       <div class='code'>\
-                        <p>"+ json_display +"</p>\
-                       </div>\
+                       <pre style='font-size: 77%; line-height: 1em;'><code class='code'>\
+		         "+ json_display +"\
+		       </code></pre>\
                      </div>\
                      <div class='result_wrapper g--medium-1 g-wide--2 g--last'>\
                        <div class='result'>\
