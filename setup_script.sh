@@ -38,3 +38,10 @@ which jq > /dev/null || sudo apt-get -y install jq parallel
 
 [[ -d collection ]] || git clone https://github.com/artsmia/collection
 [[ -d collection-elasticsearch ]] || git clone --depth 1 https://github.com/artsmia/collection-elasticsearch
+
+which php5-fpm > /dev/null || {
+  sudo apt-get -y install php5-fpm php5-curl
+  sudo cp default.nginx /etc/nginx/sites-enabled/
+  sudo service php5-fpm restart
+  sudo service nginx reload
+}
