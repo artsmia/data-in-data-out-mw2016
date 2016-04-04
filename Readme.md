@@ -8,23 +8,27 @@ We take data, convert it to JSON, store it in Redis, index it in ElasticSearch a
 
 ## Setup:
 
-Clone this repository! Your machine should have the following packages installed:
 
-## Lesson 1: Where does data come from?
+
+# Lesson 1: Where does data come from?
 
 ### Introduction to data at Mia.
 
 Data lives in different places and formats. For this workshop we will focus on collections data.
+
+Graphic of data structure.
 
 ### Converting data into JSON.
 
 JSON is a swiss army knife data representation. It's replaced
 XML as the common-denominator format of data returned from APIs.
 
-### API it.
+---
+
+And hand building some json API data.
 
 
-## Lesson 2: Fun with Redis!
+# Lesson 2: Fun with Redis!
 
 ### What is Redis?
 
@@ -45,6 +49,8 @@ hset artist:van-gogh lastName "Van Gogh"
 
 `hmset` can set multiple hash values in one command: `hmset artist:van-gogh birth "30 March 1853" death "29 July 1890"`
 
+---
+
 So now our data for Van Gogh looks like:
 
 ```
@@ -60,6 +66,10 @@ So now our data for Van Gogh looks like:
 ```
 
 Try adding an artist to your local redis database.
+
+---
+
+smembers examples and uses
 
 ### Understanding Key Value stores, and how to make them work for you.
 
@@ -98,7 +108,9 @@ Each bucket is stored in a redis hash. Here's how to get the info on object
 "{\"id\":\"60728\",\"title\":\"Celestial Horse\",\"medium\":\"Bronze with traces of polychrome\", <... lots of JSON>}"
 ```
 
-Questions?
+# Questions?
+
+ ---
 
 Redis doesn't do search. It's great for storing data and accessing it
 quickly, but the only way to do that is to tell redis exactly what you're
@@ -107,7 +119,7 @@ looking for.
 [Elasticsearch](https://www.elastic.co/products/elasticsearch) is a tool
 for *information retrieval*. It's great at finding things.
 
-## Lesson 3: Indexing and searching data
+# Lesson 3: Indexing and searching data
 
 (Or, Where did I put my keys?!)
 
@@ -115,12 +127,16 @@ for *information retrieval*. It's great at finding things.
 
 ### Here's How.
 
-## Lesson 4: Search for it, I dare you.
+# Lesson 4: Getting data out and displaying data
+
+---
 
 Included in this repository is a simple php site that allows you to enter a search term and then renders the full JSON found in Redis via ElasticSearch and a styled version of the same data.
 
-Things to note: Load times,  UI flexibility.
+Examples of the benefits of mappings. -- KO
 
-## In Conclusion
+Favoriting and seeing the data in redis. --MH
 
-## Resources
+# In Conclusion
+
+# Resources
