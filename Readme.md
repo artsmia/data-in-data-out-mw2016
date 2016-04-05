@@ -11,12 +11,16 @@ We take data, convert it to JSON, store it in Redis, index it in ElasticSearch a
 
 
 # Lesson 1: Where does data come from?
+<img src="img/where-data.gif" alt="Where data?" style="width: 500px;"/>
+
+
 
 ### Introduction to data at Mia.
 
 Data lives in different places and formats. For this workshop we will focus on collections data.
 
-Graphic of data structure.
+<img src="img/Mia_site_structure.jpg" alt="map of data at Mia" style="width: 100%;"/>
+
 
 ### Converting data into JSON.
 
@@ -108,9 +112,12 @@ Each bucket is stored in a redis hash. Here's how to get the info on object
 "{\"id\":\"60728\",\"title\":\"Celestial Horse\",\"medium\":\"Bronze with traces of polychrome\", <... lots of JSON>}"
 ```
 
-# Questions?
+---
 
- ---
+# Questions?
+<img src="img/questions.gif" alt="Raise your hand" style="width: 500px;"/>
+
+???
 
 Redis doesn't do search. It's great for storing data and accessing it
 quickly, but the only way to do that is to tell redis exactly what you're
@@ -118,6 +125,8 @@ looking for.
 
 [Elasticsearch](https://www.elastic.co/products/elasticsearch) is a tool
 for *information retrieval*. It's great at finding things.
+
+---
 
 # Lesson 3: Indexing and searching data
 
@@ -131,12 +140,20 @@ for *information retrieval*. It's great at finding things.
 
 ---
 
+<img src="img/prototype.jpg" alt="prototype" style="width: 100%;"/>
+
+???
+
 Included in this repository is a simple php site that allows you to enter a search term and then renders the full JSON found in Redis via ElasticSearch and a styled version of the same data.
 
 Examples of the benefits of mappings. -- KO
 
 Favoriting and seeing the data in redis. --MH
 
+---
+
 # In Conclusion
+
+---
 
 # Resources
