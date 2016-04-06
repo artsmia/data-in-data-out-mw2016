@@ -49,6 +49,10 @@ session_start();
         <h1>search for art</h1>
         <input type="text" name="search" id="search" value="" placeholder="search for something">
       </div>
+      <div class="notify">
+          <i class="fa fa-heart"></i>
+        <h4>Your object has been saved!</h4>
+      </div>
       <div class="header">
       </div>
       <a id="scrollStop"></a>
@@ -78,6 +82,7 @@ session_start();
     <script type="text/javascript">
 
     $(document).ready(function(){
+      $(".notify").hide();
     $(".header").addClass("landing");
     $(".scrollToTop").click(function(){
       $("html,body").animate( { scrollTop:$("#top").offset().top } , 1000, 'linear' );

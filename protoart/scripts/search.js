@@ -11,7 +11,14 @@ $(function(){
          $.each(data.hits, function (i, ob) {
              $.each(ob, function (ind, obj) {
 
+               var img_valid = obj._source.image;
+
+               if (img_valid === "valid"){
                  var image_url = "http://"+obj._id%7+".api.artsmia.org/"+obj._id+".jpg";
+               } else {
+                 var image_url = "images/icons/placeholder--medium.png";
+               }
+
                  var json_display = JSON.stringify(obj, null, 2);
 
                    $(".wrapper").append("\
@@ -40,13 +47,14 @@ $(function(){
     });
 
     $(document).on('click', '.favorite', function(){
+      event.preventDefault();
       var object = $(this).attr("id");
       $.ajax({
          type: "POST",
          url: "redis.php?page=favorite",
          data: {"object" : object},
          success: function(response){
-           console.log(response);
+           $( ".notify" ).fadeIn( "slow").delay(3000).fadeOut();;
          }
        });
     });
