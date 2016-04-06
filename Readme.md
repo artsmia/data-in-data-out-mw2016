@@ -2,6 +2,12 @@
 
 **Dynamic Data Aggregation + Web Publishing**
 
+???
+
+(This readme does double duty as a slideshow. Headers and `---` denote
+slides, text following `???` within a slide is the 'presenter notes' for
+that slide)
+
 ---
 
 ## Introductions
@@ -14,9 +20,9 @@ We are the 'software' team at the Minneapolis Institute of Art
 
 You:
 
-* where are you from?
-* What's are you hoping to learn
-* if you could have any one superpower, what would it be?
+* Where are you from?
+* What are you hoping to learn
+* Favorite object from your collection.
 
 ???
 
@@ -84,6 +90,7 @@ XML as the common-denominator format of data returned from APIs.
 
 "artisinal json": have attendees hand-build a JSON representation of
 what their API would look like
+They could use their favorite object as an example. Or pull actual json they currently use at their institution.
 
 ## Setup
 
@@ -110,23 +117,45 @@ local machine.
 The basics:
 
 * lets start by connecting to the redis-cli so we can talk directly to Redis.
-```
-redis-cli
-```
+
+`redis-cli`
 
 If all goes well you'll see the command line prompt below. It is from here we will issue the rest of the commands to Redis.
 
+`127.0.0.1:6379>`
+
+## Strings
+
+store a single value with the key used to retrieve it
+
+`set name kjell` or
+
+`set day wednesday!`
+
+`set json '{"aJson: {"object": true}}'`
+
+string values can be retrieved with the `get` command
+
 ```
-127.0.0.1:6379>
+127.0.0.1:6379> get day
+"wednesday!"
 ```
 
-* Strings store a single value with the key used to retrieve it: `set name kjell` or `set day friday!`
-* Hashes can store multiple values behind a single key:
+???
+
+keys can be named anything. Here we're using simple key names, but using
+`:` is a redis naming convention to allow for more specificity
+
+## Hashes
+
+store multiple *fields* behind a single key:
 
 ```
 hset artist:van-gogh firstName Vincent
 hset artist:van-gogh lastName "Van Gogh"
 ```
+
+![](img/key-field-value-highlight.png)
 
 ---
 
@@ -172,7 +201,7 @@ redis.
 ...
 ```
 
-For example, and API endpoint to return all artists would
+For example, an API endpoint to return all artists would
 
 1. ask redis for all artist keys (`smembers artists`)
 2. ask redis for the information stored in each artist's record
@@ -239,26 +268,86 @@ Each bucket is stored in a redis hash and associated with its unique object id. 
 ```
 ---
 
-Now that we have a data structure and it is set up in a structure that allows for quick access we can explore creating relationships between keys.
+### Take a look
 
-We use this for two purposes in our own data structure.
-1. To create a tag index of objects.
-2. To allow various web interfaces to write connections directly to Redis, for example a user can collect objects to create a tour.
+Speaking of how we use redis, we've loaded your redis with our metadata!
+
+```
+127.0.0.1:6379> hget object:0 0
+"{\"id\":\"http:\\/\\/api.artsmia.org\\/objects\\/0\",
+\"title\":\"Air, from the series The Four Elements\",
+\"medium\":\"Pen and ink, brush and wash over graphite\",
+\"dimension\":\"68-5\\/8 x 25-1\\/8 in. (174.3 x 63.8 cm)\",
+\"continent\":\"Europe\",
+\"country\":\"England\",
+\"culture\":null,
+\"dated\":\"c.1888-89\",
+\"room\":\"Not on View\",
+\"style\":\"19th century\",
+…
+}"
+```
+
+(JSON formatting slightly altered)
 
 ---
 
-### In Redis speak we create member groups.
+### Correlating data
+
+Here's an example of how to connect two things in redis.
 
 ```
-smembers object:529:tags
-smembers tags:dutch
+127.0.0.1:6379> smembers object:529:tags
+1) "lucretia"
+2) "rembrandt"
+3) "washington-dc"
+4) "crime"
+5) "ancient-rome"
+7) "netherlands"
+8) "national-gallery-of-art"
+9) "roman-historian"
+10) "roman-mythology"
+11) "visual-arts"
+13) "europe"
+14) "sextus-tarquinius"
+15) "william-hood-dunwoody-fund"
+17) "oil-on-canvas"
 ```
+
+---
+
+```
+127.0.0.1:6379> smembers tag:dutch
+1) "1944"
+2) "7459"
+3) "53233"
+4) "53236"
+5) "54238"
+6) "54565"
+7) "54650"
+8) "55111"
+9) "529"
+```
+
+???
+
+Now that we have a data structure and it is set up in a structure that allows for quick access we can explore creating relationships between keys.
+
+---
+
+We use this for two purposes in our own data structure.
+
+1. To create a tag index of objects.
+2. To allow various web interfaces to write connections directly to Redis, for example a user can collect objects to create a tour or collect their favorite artworks.
+
+---
 
 Try it!
 
 ```
-hgetall object:112663
+hgetall object:112 112663
 ```
+
 You can see the json data associated with the object.
 
 ```
@@ -270,6 +359,16 @@ sadd tags:circus 112663
 smembers object:112663:tags
 smembers tags:circus
 ```
+
+???
+
+Note that this relationship needs to be created twice:
+
+'circus' is added to the set of `tags` for `object:112663`, and
+'112663' is added to the set of objects with `tags:circus`
+
+For both the object and the tag to know they're connected, the link has
+to be made on both sides.
 
 ---
 
@@ -306,24 +405,33 @@ documents containing them.
 
 ---
 
-Looking at three example "documents",
+#### Analysis
 
-1: Chariot Finial with Bird  
-2: Xi Bi Disc  
-3: Bi Scabbard Chape  
-4: Bi (Ceremonial Disk Symbolizing Heaven)  
-5: Bi (Cermonial Disk Symbolizing Heaven)  
-
----
-
-Let's use "Chariot Finial with Bird" (1) as an example of analysis. The
-default analyzer (`standard`) *tokenizes* the full string into one or
-more tokens (words), then lowercases each of those words and removes
+The default analyzer (`standard`) *tokenizes* the full string into one
+or more tokens (words), then lowercases each of those words and removes
 common *stopwords* such as "the", "with", and "as":
 
 "Chariot Finial with Bird" => `chariot finial bird`
 
-For all 5 documents, the inverted index will look like…
+adding a few more documents,
+
+1: "Chariot Finial with Bird" => …  
+2: "Xi Bi Disc" => `xi bi disc`   
+3: "Bi Scabbard Chape" => `bi scabbard chape`   
+4: "Bi (Ceremonial Disk Symbolizing Heaven)"  
+=> `bi ceremonial disk symbolizing heaven`  
+5: "Bi (Cermonial Disk Symbolizing Heaven)"  
+=> `bi cermonial disk symbolizing heaven`   
+
+---
+
+#### Indexing
+
+Once ES analyzes all the documents to obtain a list of words, it stores
+those terms with a list of documents containing them (an inverted
+index).
+
+It will look something like the next slide
 
 ---
 
@@ -389,16 +497,11 @@ can specify advanced analysis of a field.
 
 #### A few examples of mappings we use:
 
+Don't tokenize accession numbers ("L2011.43.6.a-b")
+
 `"accession_number": { "type": "string", "index": "not_analyzed" }`
 
-```
-"department": {
-  "type": "string",
-  "fields": {
-    "raw": {"type": "string", "index": "not_analyzed" }
-  }
-}
-```
+Analyze `title` in multiple, complimentary ways:
 
 ```
 "title": {
@@ -442,30 +545,40 @@ Favoriting and seeing the data in redis. --MH
 
 ---
 
+### Allowing your web interface to write to Redis.
+
+Select a few objects to save to a set by clicking the heart.
+
+You can then go back to your terminal and run `smembers user:01:faves`
+
+And you will see the object ids you collected.
+
+---
+
 # In Conclusion
 
 ---
 
-JSON is the MacGyver of data formats.
+# JSON is the MacGyver of data formats.
 
 
 ---
 
-Redis is flexible and fast.
+# Redis is fast and allows for data storage and data manipulation.
 
 ???
 Easy access, Fast retrieval and ability to allow web interfaces to manipulate, connect and enhance data.
 
 ---
 
-ElasticSearch is efficient and customizable.
+# ElasticSearch is flexible and customizable.
 
 ???
 Being able to customize your own index is a sure way to keep curators and visitors happy.
 
 ---
 
-Publishing made simple.
+# Publishing made simple.
 
 ???
 We use PHP and React JS along with various other programming languages to build our public facing sites, internal tools and apps, but the system behind them is the same. Web publishing can be easier even when data is spread across multiple platforms and places.
