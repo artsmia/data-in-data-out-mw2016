@@ -90,9 +90,9 @@ and tools at the ready.
 
 You'll need to open a terminal and use `ssh` to connect to it:
 
-TODO distribute pem
+Check your email for the .pem file, if you haven't received it let us know.
 
-`ssh ubuntu@<ip address>`
+`ssh -i mw2016.pem ubuntu@<ip address>`
 
 If you want, you can `git clone` this repository and follow along on your
 local machine.
@@ -107,9 +107,19 @@ local machine.
 
 The basics:
 
-* strings store a single value with the key used to retrieve it: `set name kjell` or `set day friday!`
+* lets start by connecting to the redis-cli so we can talk directly to Redis.
+```
+redis-cli
+```
 
-* hashes can store multiple values behind a single key:
+If all goes well you'll see the command line prompt below. It is from here we will issue the rest of the commands to Redis.
+
+```
+127.0.0.1:6379>
+```
+
+* Strings store a single value with the key used to retrieve it: `set name kjell` or `set day friday!`
+* Hashes can store multiple values behind a single key:
 
 ```
 hset artist:van-gogh firstName Vincent
