@@ -20,9 +20,9 @@ We are the 'software' team at the Minneapolis Institute of Art
 
 You:
 
-* where are you from?
-* What's are you hoping to learn
-* if you could have any one superpower, what would it be?
+* Where are you from?
+* What are you hoping to learn
+* Favorite object from your collection.
 
 ???
 
@@ -90,6 +90,7 @@ XML as the common-denominator format of data returned from APIs.
 
 "artisinal json": have attendees hand-build a JSON representation of
 what their API would look like
+They could use their favorite object as an example. Or pull actual json they currently use at their institution.
 
 ## Setup
 
@@ -544,30 +545,40 @@ Favoriting and seeing the data in redis. --MH
 
 ---
 
+### Allowing your web interface to write to Redis.
+
+Select a few objects to save to a set by clicking the heart.
+
+You can then go back to your terminal and run `smembers user:01:faves`
+
+And you will see the object ids you collected.
+
+---
+
 # In Conclusion
 
 ---
 
-JSON is the MacGyver of data formats.
+# JSON is the MacGyver of data formats.
 
 
 ---
 
-Redis is flexible and fast.
+# Redis is fast and allows for data storage and data manipulation.
 
 ???
 Easy access, Fast retrieval and ability to allow web interfaces to manipulate, connect and enhance data.
 
 ---
 
-ElasticSearch is efficient and customizable.
+# ElasticSearch is flexible and customizable.
 
 ???
 Being able to customize your own index is a sure way to keep curators and visitors happy.
 
 ---
 
-Publishing made simple.
+# Publishing made simple.
 
 ???
 We use PHP and React JS along with various other programming languages to build our public facing sites, internal tools and apps, but the system behind them is the same. Web publishing can be easier even when data is spread across multiple platforms and places.
