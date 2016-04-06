@@ -6,8 +6,6 @@
 
 We take data, convert it to JSON, store it in Redis, index it in ElasticSearch and then publish it for the masses. Here's how...
 
-TODO: a drawing?
-
 ## Setup
 
 We've prepared an AWS machine for everyone to use with the required data
@@ -22,11 +20,14 @@ TODO distribute pem
 If you want, you can `git clone` this repository and follow along on your
 local machine.
 
-## Lesson 1: Where does data come from?
+# Lesson 1: Where does data come from?
+<img src="img/where-data.gif" alt="Where data?" style="width: 500px;"/>
 
 ### Introduction to data at Mia.
 
 Data lives in different places and formats. For this workshop we will focus on collections data.
+
+<img src="img/Mia_site_structure.jpg" alt="map of data at Mia" style="width: 100%;"/>
 
 ### Converting data into JSON.
 
@@ -69,7 +70,7 @@ XML as the common-denominator format of data returned from APIs.
 }
 ```
 
-## Lesson 2: Fun with Redis!
+# Lesson 2: Fun with Redis!
 
 ### What is Redis?
 
@@ -93,6 +94,8 @@ hset artist:van-gogh lastName "Van Gogh"
 `hmset` can set multiple hash values in one command:
 
 `hmset artist:van-gogh birth "30 March 1853" death "29 July 1890"`
+
+---
 
 So now our data for Van Gogh looks like:
 
@@ -199,11 +202,8 @@ Each bucket is stored in a redis hash and associated with its unique object id. 
 
 ---
 
-### Questions?
-
-## Lesson 3: Indexing and searching data
-
-(Or, **Where did I put my keys?!**)
+# Questions?
+<img src="img/questions.gif" alt="Raise your hand" style="width: 500px;"/>
 
 ---
 
@@ -216,6 +216,10 @@ know exactly what you're looking for.
 for *information retrieval*. It's great at finding things.
 
 ---
+
+# Lesson 3: Indexing and searching data
+
+(Or, **Where did I put my keys?!**)
 
 ### Indexing
 
@@ -351,18 +355,24 @@ then again as `department.raw` as an un-alayzed string.
 
 "Snowball" does stemming: `horses` => `horse`
 
----
-
 # Lesson 4: Getting data out and displaying data
 
 ---
 
-## Lesson 4: Search for it, I dare you.
+<img src="img/prototype.jpg" alt="prototype" style="width: 100%;"/>
+
+???
 
 Included in this repository is a simple php site that allows you to enter a search term and then renders the full JSON found in Redis via ElasticSearch and a styled version of the same data.
 
-Things to note: Load times,  UI flexibility.
+Examples of the benefits of mappings. -- KO
 
-## In Conclusion
+Favoriting and seeing the data in redis. --MH
 
-## Resources
+---
+
+# In Conclusion
+
+---
+
+# Resources
