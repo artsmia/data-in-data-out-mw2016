@@ -10,8 +10,10 @@ $(function(){
 
          $.each(data.hits, function (i, ob) {
              $.each(ob, function (ind, obj) {
+
                  var image_url = "http://"+obj._id%7+".api.artsmia.org/"+obj._id+".jpg";
                  var json_display = JSON.stringify(obj, null, 2);
+
                    $(".wrapper").append("\
                     <div class='json_wrapper g--medium-1 g-wide--2'>\
                        <pre style='font-size: 77%; line-height: 1em;'><code class='code'>\
@@ -22,6 +24,7 @@ $(function(){
                        <div class='result'>\
                          <div class='result-image'>\
                           <img src="+image_url+" alt='Object image'>\
+                          <a href='#' id="+obj._id+" class='favorite'><i class='fa fa-heart'></i></a>\
                          </div>\
                          <div class='result-tombstone'>\
                           <h4>"+ obj._source.title +", "+ obj._source.dated +"</h4>\
@@ -36,5 +39,15 @@ $(function(){
 
     });
 
-
+    $(document).on('click', '.favorite', function(){
+      var object = $(this).attr("id");
+      $.ajax({
+         type: "POST",
+         url: "redis.php?page=favorite",
+         data: {"object" : object},
+         success: function(response){
+           console.log(response);
+         }
+       });
     });
+});

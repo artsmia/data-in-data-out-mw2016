@@ -203,8 +203,7 @@ to look up information on `17`, I would say to redis:
 "{\"id\":\"17\",\"title\":\"Sketch made on Indian Reservation, Montana\",\"medium\":\"Graphite\",…}"
 ```
 
----
-
+???
 But as the size of the `object:` keys grows, it takes longer and longer
 for redis to keep things organized. This is where the *data structure*
 part of redis comes into play.
@@ -235,6 +234,39 @@ Each bucket is stored in a redis hash and associated with its unique object id. 
 ```
 > hget object:60 60728
 "{\"id\":\"60728\",\"title\":\"Celestial Horse\",\"medium\":\"Bronze with traces of polychrome\", <... lots of JSON>}"
+```
+---
+
+Now that we have a data structure and it is set up in a structure that allows for quick access we can explore creating relationships between keys.
+
+We use this for two purposes in our own data structure.
+1. To create a tag index of objects.
+2. To allow various web interfaces to write connections directly to Redis, for example a user can collect objects to create a tour.
+
+---
+
+### In Redis speak we create member groups.
+
+```
+smembers object:529:tags
+smembers tags:dutch
+```
+
+Try it!
+
+```
+hgetall object:112663
+```
+You can see the json data associated with the object.
+
+```
+smembers object:112663:tags
+
+sadd object:112663:tags circus
+sadd tags:circus 112663
+
+smembers object:112663:tags
+smembers tags:circus
 ```
 
 ---
@@ -412,4 +444,41 @@ Favoriting and seeing the data in redis. --MH
 
 ---
 
+JSON is the MacGyver of data formats.
+
+
+---
+
+Redis is flexible and fast.
+
+???
+Easy access, Fast retrieval and ability to allow web interfaces to manipulate, connect and enhance data.
+
+---
+
+ElasticSearch is efficient and customizable.
+
+???
+Being able to customize your own index is a sure way to keep curators and visitors happy.
+
+---
+
+Publishing made simple.
+
+???
+We use PHP and React JS along with various other programming languages to build our public facing sites, internal tools and apps, but the system behind them is the same. Web publishing can be easier even when data is spread across multiple platforms and places.
+
+---
 # Resources
+
+Redis.io
+
+---
+# Thanks!
+**
+Andrew David, adavid@artsmia.org
+Kjell Olsen, kolsen@artsmia.org
+Misty Havens, mhavens@artsmia.org
+**
+???
+We hope you enjoyed this session as much as we did!
