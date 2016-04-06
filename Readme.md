@@ -82,7 +82,8 @@ part of redis comes into play.
 
 To get around the issues of saving thousands of `key: value` pairs,
 we group artworks by their object id and store them in a series of
-hashes. Hashes are much more memory efficient [Redis Opimizations](http://redis.io/topics/memory-optimization)
+hashes. Hashes are much more memory efficient [Redis Opimizations](http://redis.io/topics/memory-optimization).
+
 To store our hashes we organize them in "**buckets**". Artworks are sorted into buckets
 according to their object ID. The first 1000 go into "bucket 0", the
 next 1000 go into "bucket 1" and so on.  This helps improve the memory footprint and keeps retrieval time down.
