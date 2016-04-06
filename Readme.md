@@ -587,6 +587,7 @@ We use PHP and React JS along with various other programming languages to build 
 # Resources
 
 Redis.io
+
 [JSON Lint](http://jsonlint.com/) Excellent JSON validation tool.
 
 ---
