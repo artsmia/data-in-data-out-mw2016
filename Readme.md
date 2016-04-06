@@ -4,30 +4,38 @@
 
 ---
 
-We take data, convert it to JSON, store it in Redis, index it in ElasticSearch and then publish it for the masses. Here's how...
+## Introductions
 
-## Setup
+We are the 'software' team at the Minneapolis Institute of Art
 
-We've prepared an AWS machine for everyone to use with the required data
-and tools at the ready.
+* Andrew David
+* Misty Havens
+* Kjell Olsen
 
-You'll need to open a terminal and use `ssh` to connect to it:
+You:
 
-TODO distribute pem
+* where are you from?
+* What's are you hoping to learn
+* if you could have any one superpower, what would it be?
 
-`ssh ubuntu@<ip address>`
+???
 
-If you want, you can `git clone` this repository and follow along on your
-local machine.
+We take data, convert it to JSON, store it in Redis, index it in ElasticSearch and then publish it for the masses. We're here to show you how...
+
+Workshop attendee intros
+
+---
 
 # Lesson 1: Where does data come from?
 <img src="img/where-data.gif" alt="Where data?" style="width: 500px;"/>
 
 ### Introduction to data at Mia.
 
-Data lives in different places and formats. For this workshop we will focus on collections data.
-
 <img src="img/Mia_site_structure.jpg" alt="map of data at Mia" style="width: 100%;"/>
+
+???
+
+Data lives in different places and formats. For this workshop we will focus on collections data.
 
 ### Converting data into JSON.
 
@@ -69,6 +77,25 @@ XML as the common-denominator format of data returned from APIs.
   "title": "Hollyhocks"
 }
 ```
+
+???
+
+"artisinal json": have attendees hand-build a JSON representation of
+what their API would look like
+
+## Setup
+
+We've prepared an AWS machine for everyone to use with the required data
+and tools at the ready.
+
+You'll need to open a terminal and use `ssh` to connect to it:
+
+TODO distribute pem
+
+`ssh ubuntu@<ip address>`
+
+If you want, you can `git clone` this repository and follow along on your
+local machine.
 
 # Lesson 2: Fun with Redis!
 
@@ -137,7 +164,7 @@ For example, and API endpoint to return all artists would
 
 1. ask redis for all artist keys (`smembers artists`)
 2. ask redis for the information stored in each artist's record
-   (`artists.map {|artist| hgetall artist:id}`)
+   (`artists.map { |artist| hgetall artist:id }`)
 3. Transform that information into JSON
 
 ```
