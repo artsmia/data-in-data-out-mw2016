@@ -39,8 +39,10 @@ Data lives in different places and formats. For this workshop we will focus on c
 
 ### Converting data into JSON.
 
-JSON is a swiss army knife data representation. It's replaced
+[JSON](http://www.json.org/) is a swiss army knife data representation. It's replaced
 XML as the common-denominator format of data returned from APIs.
+
+<img src="img/object.gif" alt="json object" style="width: 598px;"/>
 
 ---
 
