@@ -80,17 +80,18 @@ But as the size of the `object:` keys grows, it takes longer and longer
 for redis to keep things organized. This is where the *data structure*
 part of redis comes into play.
 
-To get around the slowdown from saving thousands of `key: value` pairs,
+To get around the issues of saving thousands of `key: value` pairs,
 we group artworks by their object id and store them in a series of
-hashes. We call these "**buckets**". Artworks are sorted into buckets
+hashes. Hashes are much more memory efficient [Redis Opimizations](http://redis.io/topics/memory-optimization)
+To store our hashes we organize them in "**buckets**". Artworks are sorted into buckets
 according to their object ID. The first 1000 go into "bucket 0", the
-next 1000 go into "bucket 1".
+next 1000 go into "bucket 1" and so on.  This helps improve the memory footprint and keeps retrieval time down.
 
 To make it easy to know which bucket an object goes in, we use the
 object id divided by 1000 to assign buckets. So 278 is in bucket `0`,
 1218 - `1`, 60728 - `60`, etc.
 
-Each bucket is stored in a redis hash. Here's how to get the info on object
+Each bucket is stored in a redis hash and associated with its unique object id. Here's how to get the info on object
 60728:
 
 ```
