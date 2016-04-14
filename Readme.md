@@ -552,6 +552,78 @@ You can then go back to your terminal and run `smembers user:01:faves`
 
 And you will see the object ids you collected.
 
+### Creating an index
+
+```
+> curl -XPOST $ES_URL/objects
+{"acknowledged":true}⏎ 
+```
+
+creates the index `objects`.
+
+### Indexing a document
+
+Let's index a simple document. It will look something like this:
+
+```
+> curl -XPOST $ES_URL/objects/object_data/1 -d '{
+  "title": "Horse",
+  "artist": "…"
+}'
+{"_index":"objects","_type":"object_data","_id":"1","_version":1,"created":true}⏎ 
+```
+
+This indexes the JSON `{"title": "Horse", "artist": "…"}` within the
+index `objects` and type `object_data` at the ES server `$ES_URL`.
+
+---
+
+```
+> curl "$ES_URL/objects/_search?q=horse"
+{
+  "took": 1,
+  "timed_out": false,
+  "_shards": {
+    "total": 5,
+    "successful": 5,
+    "failed": 0
+  },
+  "hits": {
+    "total": 1,
+    "max_score": 0.30685282,
+    "hits": [
+      {
+        "_index": "horses",
+        "_type": "data",
+        "_id": "1",
+        "_score": 0.30685282,
+        "_source": {
+          "title": "Horse",
+          "artist": "…"
+        }
+      }
+    ]
+  }
+}
+```
+
+### REST API
+
+It's easy to send data to ES with HTTP calls passing JSON data. There
+are also libraries that wrap this functionality in the language of your
+choice.
+
+### Mappings
+
+To create an index with mappings, just POST the mapping JSON when
+creating an index:
+
+`curl -XDELETE $ES_URL/objects` (delete the index first)
+
+`curl -XPOST -d @mappings.json $(ES_URL)/objects`
+
+(Here, mappings.json is a file that `curl` sends as JSON using the `@` syntax. [See ours](https://github.com/artsmia/collection-elasticsearch/blob/master/mappings.json)) 
+
 ---
 
 # In Conclusion
@@ -582,20 +654,22 @@ Being able to customize your own index is a sure way to keep curators and visito
 ???
 We use PHP and React JS along with various other programming languages to build our public facing sites, internal tools and apps, but the system behind them is the same. Web publishing can be easier even when data is spread across multiple platforms and places.
 
----
 # Resources
 
-Redis.io
-[Elasticsearch](https://www.elastic.co/guide/index.html)
-[JSON Lint](http://jsonlint.com/) Excellent JSON validation tool.
-[These slides](https://github.com/artsmia/data-in-data-out-mw2016)
+Both [redis](http://redis.io) and [Elasticsearch](https://www.elastic.co/guide/index.html) have great documentation
 
----
+[JSON Lint](http://jsonlint.com/) is an excellent JSON validation tool.
+
+You may already be reading [these slides](https://github.com/artsmia/data-in-data-out-mw2016)
+
+Museums using ES: [artsmia](https://github.com/artsmia/collection-elasticsearch/) and [cooperhewitt](https://github.com/cooperhewitt/collection-elasticsearch)
+
 # Thanks!
-**
-Andrew David, adavid@artsmia.org
-Kjell Olsen, kolsen@artsmia.org
-Misty Havens, mhavens@artsmia.org
-**
+
+Andrew David, adavid@artsmia.org  
+Kjell Olsen, kolsen@artsmia.org  
+Misty Havens, mhavens@artsmia.org  
+
 ???
+
 We hope you enjoyed this session as much as we did!
