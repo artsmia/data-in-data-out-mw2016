@@ -2,6 +2,8 @@
 
 **Dynamic Data Aggregation + Web Publishing**
 
+https://git.io/vVrFc
+
 ???
 
 (This readme does double duty as a slideshow. Headers and `---` denote
@@ -102,9 +104,6 @@ You'll need to open a terminal and use `ssh` to connect to it:
 Check your email for the .pem file, if you haven't received it let us know.
 
 `ssh -i mw2016.pem ubuntu@<ip address>`
-
-If you want, you can `git clone` this repository and follow along on your
-local machine.
 
 # Lesson 2: Fun with Redis!
 
@@ -587,8 +586,9 @@ We use PHP and React JS along with various other programming languages to build 
 # Resources
 
 Redis.io
-
+[Elasticsearch](https://www.elastic.co/guide/index.html)
 [JSON Lint](http://jsonlint.com/) Excellent JSON validation tool.
+[These slides](https://github.com/artsmia/data-in-data-out-mw2016)
 
 ---
 # Thanks!
